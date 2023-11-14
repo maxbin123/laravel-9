@@ -5,6 +5,7 @@ namespace App\Utilities\Helpers;
 use App\Utilities\Contracts\ElasticsearchHelperInterface;
 use App\Utilities\Dto\Email;
 use Elasticsearch;
+use Illuminate\Support\Collection;
 
 class ElasticsearchHelper implements ElasticsearchHelperInterface {
     /**
@@ -26,5 +27,20 @@ class ElasticsearchHelper implements ElasticsearchHelperInterface {
         $result = Elasticsearch::index($data);
 
         return $result['_id'];
+    }
+
+    public function getSentEmails(): Collection {
+        $data = [
+            'index' => 'sent-emails',
+            'body'  => [
+                'query' => [
+                    'match_all' => (object)[],
+                ],
+            ],
+        ];
+
+        $result = Elasticsearch::search($data);
+
+        return collect($result['hits']['hits'])->map(fn($hit) => $hit['_source']);
     }
 }

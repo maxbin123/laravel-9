@@ -19,7 +19,7 @@ class SendEmailTest extends TestCase
         Elasticsearch::shouldReceive('index')->once()->andReturn(['_id' => '12345678']);
         Redis::shouldReceive('set')->once()->andReturn(true);
 
-        $this->post("api/{$user->id}/send?api_token=" . $user->token,
+        $this->postJson("api/{$user->id}/send?api_token=" . $user->token,
             [
                 [
                     'email' => 'test@email.com',
@@ -41,7 +41,7 @@ class SendEmailTest extends TestCase
         Elasticsearch::shouldReceive('index')->twice()->andReturn(['_id' => '12345678']);
         Redis::shouldReceive('set')->twice()->andReturn(true);
 
-        $this->post("api/{$user->id}/send?api_token=" . $user->token,
+        $this->postJson("api/{$user->id}/send?api_token=" . $user->token,
             [
                 [
                     'email' => 'test@email.com',
@@ -64,7 +64,7 @@ class SendEmailTest extends TestCase
         $this->seed();
         $user = User::first();
 
-        $this->post("api/{$user->id}/send?api_token=wrong-key",
+        $this->postJson("api/{$user->id}/send?api_token=wrong-key",
             [
                 [
                     'email' => 'test@email.com',
@@ -81,7 +81,7 @@ class SendEmailTest extends TestCase
         $this->seed();
         $user = User::first();
 
-        $this->post("api/{$user->id}/send?api_token=" . $user->token,
+        $this->postJson("api/{$user->id}/send?api_token=" . $user->token,
             [
                 [
                     'email' => 'testemail.com',
@@ -90,6 +90,6 @@ class SendEmailTest extends TestCase
                 ]
             ]
         )
-            ->assertStatus(302);
+        ->assertJsonValidationErrors('0.email');
     }
 }

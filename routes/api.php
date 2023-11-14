@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('{user}/send', [EmailController::class, 'send']);
+Route::get('list', [EmailController::class, 'list']);
 

@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EmailSendRequest;
 use App\Jobs\SendEmailJob;
+use App\Utilities\Contracts\ElasticsearchHelperInterface;
 use App\Utilities\Dto\Email;
+use Illuminate\Support\Collection;
 
 class EmailController extends Controller
 {
-    // TODO: finish implementing send method
     public function send(EmailSendRequest $request)
     {
 
@@ -19,9 +20,9 @@ class EmailController extends Controller
         return response()->json(['queued' => true]);
     }
 
-    //  TODO - BONUS: implement list method
-    public function list()
+    public function list(ElasticsearchHelperInterface $elastic): Collection
     {
 
+        return $elastic->getSentEmails();
     }
 }

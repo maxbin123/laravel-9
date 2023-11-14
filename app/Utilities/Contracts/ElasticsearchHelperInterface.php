@@ -3,6 +3,7 @@
 namespace App\Utilities\Contracts;
 
 use App\Utilities\Dto\Email;
+use Illuminate\Support\Collection;
 
 interface ElasticsearchHelperInterface {
     /**
@@ -12,4 +13,5 @@ interface ElasticsearchHelperInterface {
      * @return mixed - Return the id of the record inserted into Elasticsearch
      */
     public function storeEmail(Email $email): mixed;
+    public function getSentEmails(): Collection;
 }
