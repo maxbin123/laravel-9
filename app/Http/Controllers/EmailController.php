@@ -16,7 +16,7 @@ class EmailController extends Controller
             SendEmailJob::dispatch(new Email(...$email));
         }
 
-        return 'OK';
+        return response()->json(['queued' => true]);
     }
 
     //  TODO - BONUS: implement list method
